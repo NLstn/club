@@ -11,6 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+      - name: Cache packages
+        uses: actions/cache@v2
+        with:
+          path: $${{ env.FLUTTER_ROOT }}/.pub-cache
+          key: deps-${{ hashFiles('**/pubspec.lock') }}
+      - run: flutter pub get
       - run: flutter build web
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
